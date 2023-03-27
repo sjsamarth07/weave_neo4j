@@ -13,4 +13,7 @@ Repo consists of data pipeline which processes xml data to Neo4j
 
 
 ## Neo4j Target Database
-Please run a Neo4j database locally. You can download Neo4j from https://neo4j.com/download-center/ or run it in Docker:
+Please run a Neo4j database locally. You can download Neo4j from https://neo4j.com/download-center/ 
+
+### Note:
+Apologies for not using Airflow, I read this requirement in the very last moment, if it is a must requirement given an extra day I can implement the pipeline using airflow.
