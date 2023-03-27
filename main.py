@@ -15,13 +15,17 @@ def parser_data_into_quries(df: pd.DataFrame,tag: str) -> list:
 
     transaction_execution_commands = []
     for i in transaction_list:
-        row = benedict(i[0])
+        if type(i[0]) is list:
+            row = benedict(i[0][0])
+        else:
+            row = benedict(i[0])
         query = []
         for count, each in enumerate(row.keypaths()):
             if isinstance(row[each], dict) or isinstance(row[each], list):
                 continue
             query.append(f"""{each.replace('@', '').replace('.', "_").replace('#', '').replace("'","")}: '{row[each].replace("'","")}'""")
         neo4j_create_statemenet = f"create (t:{tag} " + "{" + ', '.join(query) + "})"
+        # neo4j_create_statemenet = f"CREATE(protein) - [r: references]->(reference)"
         transaction_execution_commands.append(neo4j_create_statemenet)
 
     return transaction_execution_commands
@@ -44,7 +48,7 @@ def parser_data_into_quries_1(df: pd.DataFrame) -> list:
 
 
 def execute_transactions(transaction_execution_commands: list):
-    data_base_connection = GraphDatabase.driver(uri="bolt://localhost:7687", auth=("neo4j", "password"))
+    data_base_connection = GraphDatabase.driver(uri="bolt://localhost:7687", auth=("neo4j", "Sainath0794"))
     session = data_base_connection.session()
     for i in transaction_execution_commands:
         session.run(i)
@@ -53,7 +57,7 @@ def execute_transactions(transaction_execution_commands: list):
 if __name__ == '__main__':
     data = benedict('Q9Y261.xml', format='xml')
 
-    tags = ['reference', 'comment','dbReference']
+    tags = ['protein','reference', 'comment','dbReference','feature','evidence','organism','gene']
     for i in tags:
         df = pd.DataFrame.from_dict(data=dict(
             reference=data[f'uniprot.entry.{i}'],
