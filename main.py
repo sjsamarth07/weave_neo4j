@@ -44,7 +44,7 @@ def parser_data_into_quries_1(df: pd.DataFrame) -> list:
 
 
 def execute_transactions(transaction_execution_commands: list):
-    data_base_connection = GraphDatabase.driver(uri="bolt://localhost:7687", auth=("neo4j", "Sainath0794"))
+    data_base_connection = GraphDatabase.driver(uri="bolt://localhost:7687", auth=("neo4j", "password"))
     session = data_base_connection.session()
     for i in transaction_execution_commands:
         session.run(i)
